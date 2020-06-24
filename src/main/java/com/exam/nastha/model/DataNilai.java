@@ -20,9 +20,9 @@ public class DataNilai {
 	private long idMahasiswa;
 	@Column (name = "id_mata_kuliah")
 	private long idMataKuliah;
-	
 	@Column (name = "nilai")
 	private int nilai;
+	@NotBlank(message="keterangan tidak boleh Kosong")
 	@Column (name = "keterangan",length=1000)
 	private String keterangan;
 	
@@ -56,7 +56,7 @@ public class DataNilai {
 		return keterangan;
 	}
 	public void setKeterangan(String keterangan) {
-		keterangan = keterangan;
+		this.keterangan = keterangan;
 	}
 
 }

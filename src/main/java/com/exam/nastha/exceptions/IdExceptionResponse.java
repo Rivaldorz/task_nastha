@@ -2,21 +2,21 @@ package com.exam.nastha.exceptions;
 
 public class IdExceptionResponse {
 	
-	private long id;
+	private String id;
 	
 	
 	//construct
-	public IdExceptionResponse(String projectIdentifier) {
-		this.id =id;
+	public IdExceptionResponse(String string) {
+		this.id =string;
 	}
 
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

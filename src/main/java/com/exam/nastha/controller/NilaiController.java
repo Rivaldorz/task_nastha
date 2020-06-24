@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exam.nastha.dto.FuseDto;
+import com.exam.nastha.dto.rataDto;
+import com.exam.nastha.exceptions.IdExceptions;
 import com.exam.nastha.model.DataNilai;
+import com.exam.nastha.services.MapValidationErrorService;
 import com.exam.nastha.services.NilaiService;
 
 import antlr.collections.List;
@@ -25,21 +29,30 @@ import antlr.collections.List;
 
 @RestController
 @RequestMapping("/api/nilai")
+
 public class NilaiController {
 	@Autowired
 	private NilaiService nilaiService;
+	@Autowired
+	private MapValidationErrorService valiPost;
 	
 	@GetMapping("all")
-	public Iterable<DataNilai> getAllProjects(){
+	public java.util.List<rataDto> getAllProjects(){
 		return nilaiService.showAll();
 	}
 	@GetMapping("fuse")
-	public Iterable<DataNilai> getAllfused(){
+	public Iterable<FuseDto> getAllfused(){
 		return nilaiService.showFuse();
 	}
 	
 	@PutMapping("/put")
-	public ResponseEntity<?>putFamilyTree(@RequestBody DataNilai nilai){
+	public ResponseEntity<?>putFamilyTree(@Valid @RequestBody DataNilai nilai,BindingResult result){
+		
+
+		ResponseEntity<?> errorMap = valiPost.MapValidationService(result);
+		if(errorMap!= null)return errorMap;
+		
+
 		DataNilai saving=nilaiService.save(nilai);
 		return new ResponseEntity<>(nilaiService.save(saving), HttpStatus.OK);
 	}
@@ -47,8 +60,9 @@ public class NilaiController {
 	
 	@PostMapping("")
 	// ?  adalah generics
-	public ResponseEntity<?> createNewProject( @RequestBody DataNilai nilai,BindingResult result){
-
+	public ResponseEntity<?> createNewProject(@Valid @RequestBody DataNilai nilai,BindingResult result){
+		ResponseEntity<?> errorMap = valiPost.MapValidationService(result);
+		if(errorMap!= null)return errorMap;
 	
 		DataNilai saving=nilaiService.save(nilai);
 		return new ResponseEntity<DataNilai>(saving,HttpStatus.CREATED);
